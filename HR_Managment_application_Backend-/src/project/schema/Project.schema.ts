@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory  } from "@nestjs/mongoose";
 import mongoose from "mongoose";
+import { User } from "src/auth/Shemas/User.shema";
 import { Tasks } from "./Tasks.schema";
+export enum TypeStatutProjet {
+  New= 0,
+  RUNNING = 1,
+  FINISHED  = 3,
+}
 
 
 
@@ -14,12 +20,15 @@ description:string;
 StartDate?:string;
 @Prop()
 FinishDate?:string;
-@Prop()
+@Prop({
+     
+  default: TypeStatutProjet.New
+})
  statut?:TypeStatutProjet;
  @Prop()
  projectUrl?: string;
-@Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: ()=>Tasks }] })
-tasks:Tasks []; 
+@Prop([{ type: mongoose.Schema.Types.ObjectId, ref: ()=>Tasks }] )
+tasks:Tasks[]; 
 @Prop()
  NomChefProjet?:string
 @Prop()
@@ -28,16 +37,13 @@ priority?:ProjectPriority;
 progress?:number
 @Prop()
 type?:ProjectType
+@Prop({type:mongoose.Schema.Types.ObjectId,ref:'User'})
+User?:User;
 }
 export const ProjectSchema= SchemaFactory.createForClass(Project)
-export enum TypeStatutProjet {
-    NOUVEAU = 0,
-    RUNNING = 1,
-    FINISHED  = 3,
-  }
-  
+
   export enum TypeStatutTache {
-    A_FAIRE = 'à faire',
+    A_FAIRE = 'To Do',
     RUNNING = 'RUNNING',
     FINISHED  = 'FINISHED',
   }

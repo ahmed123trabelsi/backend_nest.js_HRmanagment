@@ -24,8 +24,17 @@ export  class Tasks{
     priority?:TaskPriority;
     @Prop({type:mongoose.Schema.Types.ObjectId,ref:'User'})
     User?:User;
-
+    @Prop()
+    statusChangedDate?:Date
 
 
 }
+
+
 export const TasksSchema= SchemaFactory.createForClass(Tasks)
+TasksSchema.pre('save', function(next) {
+    if (this.isModified('statut') && this.statut === TypeStatutTache.FINISHED) {
+      this.statusChangedDate = new Date();
+    }
+    next();
+  });

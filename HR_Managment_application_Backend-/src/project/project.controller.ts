@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post, Sse, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post, Query, Sse, UsePipes, ValidationPipe } from '@nestjs/common';
 import mongoose from 'mongoose';
 
 import { CreateProjectDto } from './dto/CreateProject.dto';
@@ -51,4 +51,17 @@ async updateStatut(
 ): Promise<Project> {
   return this.projectService.updateStatut(id, statut);
 }
+ @Post('/by-tasks/jj')
+
+ async getProjectsByTaskIds(@Body('taskIds') taskIds:  string[]) {
+   // Ensure taskIds is treated as an array, whether it comes as a single string or an array of strings
+  
+   
+   try {
+     const projects = await this.projectService.findProjectsByTaskIds(taskIds);
+     return projects;
+   } catch (error) {
+     throw error;
+   }
+ }
 }

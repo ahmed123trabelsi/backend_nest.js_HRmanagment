@@ -26,7 +26,7 @@ getTasks(){
     return this.taskModel.find();
 }
 getTaskById(id:string){
-    return this.taskModel.findById(id).populate(['Project']);
+    return this.taskModel.findById(id);
 }
 updateTask(id:string,taskdto:CreateTasksDto){
   return  this.taskModel.findByIdAndUpdate(id,taskdto,{new:true})
@@ -41,6 +41,10 @@ async deleteTask(id: string) {
     }
   
     await this.projectModel.updateMany(
+      {}, // This empty filter matches all documents in the collection.
+      { $pull: { tasks: deletedTask._id } } // Pull the deleted task's ID from the tasks array.
+    );
+    await this.userModel.updateMany(
       {}, // This empty filter matches all documents in the collection.
       { $pull: { tasks: deletedTask._id } } // Pull the deleted task's ID from the tasks array.
     );
@@ -66,27 +70,18 @@ async deleteTask(id: string) {
       const findE= await this.userModel.findById(employeeAffected);
       if (!findE) throw new HttpException(" E not found", 400);
     }
-  
-    // Créez une nouvelle tâche avec les données fournies, y compris l'employé affecté si spécifié
     const newTask = new this.taskModel(
       taskdto
     );
-  
-    // Sauvegardez la tâche dans la base de données
     const savedTask = await newTask.save();
-  
-    // Si projectId est fourni, mettez à jour le projet avec l'ID de la nouvelle tâche
+
     if (projectId) {
       await this.projectModel.updateOne({ _id: projectId }, { $push: { tasks: savedTask._id } });
     }
     if (employeeAffected) {
       await this.userModel.updateOne({ _id:employeeAffected  }, {  $push: { tasks: savedTask._id}});
     }
-  
-    // Créez et envoyez une notification pour la nouvelle tâche
-
-  
-    // Retournez la tâche sauvegardée
+ 
     return savedTask;
   }
   async checkAndRemoveUserFromTask() {

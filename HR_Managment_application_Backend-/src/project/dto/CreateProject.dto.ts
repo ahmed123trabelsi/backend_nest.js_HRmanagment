@@ -1,5 +1,6 @@
 import { Exclude, Type } from "class-transformer";
 import { IsBoolean, IsDate, IsDateString, IsEnum, IsNotEmpty,IsOptional,IsString, Matches, ValidateNested } from "class-validator";
+import { CreatePerformanceDto } from "src/performance/dto/CreatePerformance.dto";
 
 import { ProjectPriority, ProjectType, TaskPriority, TypeStatutProjet, TypeStatutTache } from "../schema/Project.schema";
 
@@ -7,7 +8,7 @@ export class CreateTasksDto{
 
     
 @IsNotEmpty()
-@IsOptional()
+
 @IsString()
 NomTask:string;
 @IsOptional()
@@ -21,6 +22,9 @@ startDate?:Date;
 @IsDate()
 @Type(() => Date)
 FinishDate?:Date
+/* @IsDate()
+@Type(() => Date)
+statusChangedDate?:Date */
 @IsOptional()
 @IsEnum(TypeStatutTache)
 statut?:TypeStatutTache;
@@ -31,6 +35,10 @@ projectId:string;
  priority?:TaskPriority;
  @IsOptional()
  employeeAffected:string;
+ @IsOptional()
+ @ValidateNested()
+performances: [CreatePerformanceDto]; 
+
   }
   export class CreateUserDto{
     
@@ -53,6 +61,11 @@ projectId:string;
    @IsOptional()
    @ValidateNested()
   tasks: [CreateTasksDto]; 
+  @IsOptional()
+  TeamId:string;
+  @IsOptional()
+  @ValidateNested()
+ projects: [CreateProjectDto]; 
     }
 export class CreateProjectDto{
     
@@ -77,7 +90,7 @@ StartDate?:string;
 FinishDate?:string;
 @IsOptional()
 @IsEnum(TypeStatutProjet)
- statut?:TypeStatutProjet
+ statut?:TypeStatutProjet=TypeStatutProjet.New
  @IsOptional()
  @IsString()
  projectUrl?: string;
@@ -95,4 +108,6 @@ progress?:number
 @IsOptional()
 @IsEnum(ProjectType)
 type?:ProjectType
+@IsOptional()
+UserProjectsId:string;
 }

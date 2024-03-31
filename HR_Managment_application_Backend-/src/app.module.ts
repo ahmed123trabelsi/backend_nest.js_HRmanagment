@@ -11,6 +11,7 @@ import { ProjectModule } from './project/project.module';
 import {AttendanceModule} from "./attendance/attendance.module";
 import { MissionModule } from './mission/mission.module';
 import { TeamsModule } from './teams/teams.module';
+import { PerformanceModule } from './performance/performance.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { TeamsModule } from './teams/teams.module';
       ProjectModule,
       AttendanceModule,
       MissionModule,
-      TeamsModule
+      TeamsModule,
+      PerformanceModule
     
       
 

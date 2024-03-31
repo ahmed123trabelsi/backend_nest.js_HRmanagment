@@ -1,13 +1,14 @@
 import { IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { signupDto } from 'src/auth/dto/signupDto';
+import { CreateUserDto } from "src/project/dto/CreateProject.dto";
 export class CreateTeamsDto{
     
 
-    @IsNotEmpty()
+  @IsOptional()
    @IsString()
-   name:string;
+   TeamsName?:string;
 
    @IsOptional()
    @ValidateNested()
-  Employees: [signupDto]; 
+  Employees: string[]; 
     }

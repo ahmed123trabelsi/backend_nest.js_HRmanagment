@@ -4,6 +4,21 @@ import { Role } from './Roles.Shema';
 import {Leave} from "../../conges/Schema/Leaves.schema";
 import {Attendance} from "../../attendance/Schema/Attendance.schema";
 import { Tasks } from 'src/project/schema/Tasks.schema';
+import { Teams } from 'src/teams/schema/Teams.schema';
+import { Project } from 'src/project/schema/Project.schema';
+
+export enum ReviewLevel {
+  Outstanding = "Outstanding",
+  Excellent = "Excellent",
+  VeryGood = "Very Good",
+  Good = "Good",
+  Satisfactory = "Satisfactory",
+  Average = "Average",
+  BelowAverage = "Below Average",
+  Unsatisfactory = "Unsatisfactory",
+  Poor = "Poor",
+  Unacceptable = "Unacceptable"
+}
 
 
 
@@ -65,11 +80,20 @@ import { Tasks } from 'src/project/schema/Tasks.schema';
 
       @Prop()
       soldeMaladie : number ;
+      @Prop()
+    reviewClient: ReviewLevel ;
 
       @Prop({nullable: true})
       profileImage: string;
       @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: ()=>Tasks }] })
       tasks:Tasks []; 
+      @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Teams'} )
+      teams:Teams ; 
+      @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: ()=>Performance }] )
+      performances:Performance []; 
+      @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: ()=>Project }] )
+      projects:Project []; 
+
 
   }
 
