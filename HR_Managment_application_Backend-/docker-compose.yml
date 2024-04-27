@@ -19,7 +19,7 @@ services:
   mongodb:
     container_name: mongodb_1
     restart: unless-stopped
-    image: mongo
+    image: mongo:latest
     ports:
       - "27018:27017"
     volumes:
