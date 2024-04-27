@@ -8,7 +8,13 @@ async function bootstrap() {
 
   await app.listen(process.env.SERVER_PORT) 
   
-  app.enableCors( );
+  app.enableCors( {
+    origin: ['http://192.168.33.10:4200'],  // Adjust according to your front-end URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+  });
   app.use(cookieParser());
   
 }
