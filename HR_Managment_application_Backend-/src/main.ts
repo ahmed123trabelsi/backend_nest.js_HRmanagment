@@ -8,7 +8,7 @@ async function bootstrap() {
 
   await app.listen(process.env.SERVER_PORT) 
   
-  app.enableCors();
+  app.enableCors( { origin: "http://192.168.33.10:4200"});
   app.use(cookieParser());
   
 }
